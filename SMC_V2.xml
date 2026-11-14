@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <!-- ========== SMC ROBOT V2 - TELEPHONE - MARTINGALE OFF ========== -->
+  <!-- REGLAGES : Volatility 75 - Stake 0.35$ - SL 10$ - TP 20$ -->
+
+  <variables>
+    <variable id="totalProfit">TotalProfit</variable>
+    <variable id="totalLoss">TotalLoss</variable>
+    <variable id="tradeCount">TradeCount</variable>
+    <variable id="lastHigh">LastHigh</variable>
+    <variable id="lastLow">LastLow</variable>
+    <variable id="consecutiveLoss">PerteConsecutive</variable>
+  </variables>
+
+  <!-- 1. DEFINITION DU TRADE -->
+  <block type="trade_definition" deletable="false" movable="false">
+    <field name="MARKET">synthetic_index</field>
+    <field name="SUBMARKET">random_index</field>
+    <field name="SYMBOL">R_75</field>
+    <field name="TRADETYPE">callput</field>
+    <field name="CANDLEINTERVAL">60</field>
+    <field name="RESTART">TRUE</field>
+  </block>
+
+  <!-- 2. OPTIONS : 5 Ticks - 0.35$ -->
+  <block type="trade_definition_tradeoptions" deletable="false" movable="false">
+    <field name="DURATION">5</field>
+    <field name="DURATION_UNIT">t</field>
+    <field name="AMOUNT">0.35</field>
+    <field name="CURRENCY">USD</field>
+  </block>
+
+  <!-- 3. AVANT L'ACHAT - STRATEGIE SMC V2 -->
+  <block type="before_purchase" deletable="false" movable="false">
+    <statement name="BEFOREPURCHASE">
+      <!-- SECURITE : Si on a deja perdu 10$ -> STOP -->
+      <block type="controls_if">
+        <value name="IF0">
+          <block type="logic_compare">
+            <field name="OP">LTE</field>
+            <value name="A"><block type="variables_get"><field name="VAR">TotalProfit</field></block></value>
+            <value name="B"><block type="math_number"><field name="NUM">-10</field></block></value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="trade_stop">
+            <field name="STOP">STOP</field>
+          </block>
+        </statement>
+      </block>
+      <!-- SECURITE : Si on a gagne 20$ -> STOP ET SECURISE -->
+      <block type="controls_if">
+        <value name="IF0">
+          <block type="logic_compare">
+            <field name="OP">GTE</field>
+            <value name="A"><block type="variables_get"><field name="VAR">TotalProfit</field></block></value>
+            <value name="B"><block type="math_number"><field name="NUM">20</field></block></value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="trade_stop">
+            <field name="STOP">STOP</field>
+          </block>
+        </statement>
+      </block>
+      <!-- SECURITE : 3 pertes d'affilee -> PAUSE -->
+      <block type="controls_if">
+        <value name="IF0">
+          <block type="logic_compare">
+            <field name="OP">GTE</field>
+            <value name="A"><block type="variables_get"><field name="VAR">PerteConsecutive</field></block></value>
+            <value name="B"><block type="math_number"><field name="NUM">3</field></block></value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="trade_stop">
+            <field name="STOP">STOP</field>
+          </block>
+        </statement>
+      </block>
+
+      <!-- SMC : BOS HAUSSIER = Prix casse le dernier High -> CALL -->
+      <block type="controls_if">
+        <value name="IF0">
+          <block type="logic_compare">
+            <field name="OP">GT</field>
+            <value name="A"><block type="tick_analysis_last_tick"></block></value>
+            <value name="B"><block type="tick_analysis_last_candle_high"></block></value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="trade_purchase"><field name="PURCHASE">CALL</field></block>
+        </statement>
+        <!-- SMC : BOS BAISSIER = Prix casse le dernier Low -> PUT -->
+        <value name="IF1">
+          <block type="logic_compare">
+            <field name="OP">LT</field>
+            <value name="A"><block type="tick_analysis_last_tick"></block></value>
+            <value name="B"><block type="tick_analysis_last_candle_low"></block></value>
+          </block>
+        </value>
+        <statement name="DO1">
+          <block type="trade_purchase"><field name="PURCHASE">PUT</field></block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+
+  <!-- 4. APRES LE TRADE - CALCUL PROFIT / PERTE -->
+  <block type="after_purchase" deletable="false" movable="false">
+    <statement name="AFTERPURCHASE">
+      <block type="variables_set">
+        <field name="VAR">TotalProfit</field>
+        <value name="VALUE">
+          <block type="math_arithmetic">
+            <field name="OP">ADD</field>
+            <value name="A"><block type="variables_get"><field name="VAR">TotalProfit</field></block></value>
+            <value name="B"><block type="trade_result_profit"></block></value>
+          </block>
+        </value>
+      </block>
+      <block type="controls_if">
+        <value name="IF0">
+          <block type="logic_compare">
+            <field name="OP">LT</field>
+            <value name="A"><block type="trade_result_profit"></block></value>
+            <value name="B"><block type="math_number"><field name="NUM">0</field></block></value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="variables_set">
+            <field name="VAR">PerteConsecutive</field>
+            <value name="VALUE">
+              <block type="math_arithmetic">
+                <field name="OP">ADD</field>
+                <value name="A"><block type="variables_get"><field name="VAR">PerteConsecutive</field></block></value>
+                <value name="B"><block type="math_number"><field name="NUM">1</field></block></value>
+              </block>
+            </value>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="variables_set">
+            <field name="VAR">PerteConsecutive</field>
+            <value name="VALUE"><block type="math_number"><field name="NUM">0</field></block></value>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+
+  <!-- 5. INITIALISATION -->
+  <block type="during_purchase" deletable="false" movable="false">
+    <statement name="DURINGPURCHASE">
+      <block type="variables_set">
+        <field name="VAR">TotalProfit</field>
+        <value name="VALUE"><block type="math_number"><field name="NUM">0</field></block></value>
+      </block>
+    </statement>
+  </block>
+</xml>
