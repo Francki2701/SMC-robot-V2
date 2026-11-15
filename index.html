@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ROBOT V5.1 AUTO SMC A à Z</title>
+<title>ROBOT V5.2 AUTO SMC A à Z</title>
 <style>
 body{background:#0f1115;color:#fff;font-family:Arial,sans-serif;padding:15px;margin:0}
 h1{font-size:20px} h1 span{color:#22ff88}
@@ -19,7 +19,7 @@ label{font-weight:bold;display:block;margin-bottom:6px;margin-top:12px}
 </style>
 </head>
 <body>
-<h1>ROBOT V5.1 <span>AUTO SMC A à Z</span></h1>
+<h1>ROBOT V5.2 <span>AUTO SMC A à Z</span></h1>
 <p><small>Upload = Analyse IA automatique. Plus de cases à cocher à la main.</small></p>
 
 <div class="card">
@@ -98,8 +98,8 @@ Analyse ce graphique en détail et réponds UNIQUEMENT en français, de façon c
 
 Si le graphique est flou, dis-le. Ne invente pas de prix si tu ne vois pas. Sois précis.`;
 
-  // MODELES A TESTER DANS L'ORDRE - si le 1er échoue, on essaie le 2e
-  const modeles = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.0-flash-lite"];
+  // MODELES 2026 CORRIGES - Google a supprimé les 2.0, on utilise les 3.5
+  const modeles = ["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-2.5-flash", "gemini-2.5-flash-lite"];
   let derniereErreur = "";
 
   for(let modele of modeles){
@@ -114,11 +114,10 @@ Si le graphique est flou, dis-le. Ne invente pas de prix si tu ne vois pas. Sois
       });
       const data = await response.json();
 
-      // SI GOOGLE RENVOIE UNE ERREUR, ON L'AFFICHE VRAIMENT
       if(data.error){
         derniereErreur = "Modèle " + modele + " -> " + data.error.message + " (Code: " + data.error.code + ")";
         console.log(derniereErreur);
-        continue; // essaie le modèle suivant
+        continue;
       }
 
       if(!data.candidates || !data.candidates[0] || !data.candidates[0].content){
@@ -137,7 +136,6 @@ Si le graphique est flou, dis-le. Ne invente pas de prix si tu ne vois pas. Sois
     }
   }
 
-  // SI LES 3 MODELES ONT ECHOUE, ON AFFICHE LA VRAIE RAISON
   errDiv.innerHTML = "<b>❌ L'IA a bloqué. Voici la VRAIE raison de Google :</b><br><br>" + derniereErreur + "<br><br><b>Que faire ?</b><br>1. Vérifie que ta clé est bien collée sans espace devant/derrière<br>2. Va sur aistudio.google.com > Crée une NOUVELLE clé dans un NOUVEAU projet<br>3. Attends 2 min et réessaie";
   errDiv.style.display='block';
   btn.disabled=false; btn.innerText="🤖 ANALYSER AUTO SMC A à Z";
