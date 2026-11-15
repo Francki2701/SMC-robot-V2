@@ -2,126 +2,145 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ROBOT V5 AUTO - SMC A à Z</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROBOT V5.1 AUTO SMC A à Z</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#fff;font-family:-apple-system,Arial,sans-serif;padding:12px}
-.top{font-weight:900;font-size:19px}.top span{color:#00ff88}
-.card{background:#131c2e;border:1px solid #1e2a44;border-radius:14px;padding:14px;margin-bottom:12px}
-input,select{width:100%;background:#0b1220;border:1px solid #334155;color:#fff;padding:12px;border-radius:10px;font-size:15px;margin-top:6px}
-.btn{width:100%;background:#00c853;color:#000;font-weight:900;padding:14px;border:0;border-radius:12px;font-size:16px;margin-top:10px}
-.big{text-align:center;font-size:38px;font-weight:900;margin:8px 0}
-.box{background:#0b1220;border-radius:10px;padding:10px;margin:6px 0}
-.ok{background:#052e16;color:#4ade80;padding:10px;border-radius:8px}
-.warn{background:#2a1500;color:#ffb020;padding:10px;border-radius:8px}
-.bad{background:#450a0a;color:#fca5a5;padding:10px;border-radius:8px}
-table{width:100%;font-size:13px}td{padding:6px;border-bottom:1px solid #1e2a44}
-img{max-width:100%;border-radius:10px;margin-top:10px}
+body{background:#0f1115;color:#fff;font-family:Arial,sans-serif;padding:15px;margin:0}
+h1{font-size:20px} h1 span{color:#22ff88}
+.card{background:#1a1d24;border-radius:15px;padding:15px;margin-bottom:15px}
+input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #333;background:#0f1115;color:#fff;font-size:16px;box-sizing:border-box}
+button{width:100%;padding:15px;border:none;border-radius:12px;background:#22ff88;color:#000;font-weight:900;font-size:17px;cursor:pointer}
+button:disabled{background:#555;color:#ccc}
+img{width:100%;border-radius:10px;margin-top:10px;display:none}
+.result{background:#0a2a1a;border:1px solid #22ff88;border-radius:12px;padding:12px;white-space:pre-wrap;font-size:14px;line-height:1.5;display:none}
+.error{background:#3a0a0a;border:1px solid #ff4444;border-radius:12px;padding:12px;color:#ffb3b3;display:none;font-size:13px}
+small{color:#888}
+label{font-weight:bold;display:block;margin-bottom:6px;margin-top:12px}
 </style>
 </head>
 <body>
-<div class="top">ROBOT V5 <span>AUTO SMC A à Z</span></div>
-<p style="color:#9aa7b8;font-size:12px">Upload = Analyse IA automatique. Plus de cases à cocher à la main.</p>
+<h1>ROBOT V5.1 <span>AUTO SMC A à Z</span></h1>
+<p><small>Upload = Analyse IA automatique. Plus de cases à cocher à la main.</small></p>
 
 <div class="card">
-<h3>1. Ta clé IA gratuite (1 seule fois)</h3>
-<input id="apikey" type="password" placeholder="Colle ta clé Gemini ici - reste sur ton téléphone">
-<p style="font-size:11px;color:#94a3b8">Va sur aistudio.google.com > Get API Key > Gratuit. Sans ça, le robot ne peut pas VOIR.</p>
+<label>1. Ta clé IA gratuite (1 seule fois)</label>
+<input id="apiKey" type="password" placeholder="Colle ta clé ici - commence par AIza ou AQ.">
+<p><small>Va sur aistudio.google.com > Get API Key > Gratuit. Sans ça, le robot ne peut pas VOIR.</small></p>
+
 <label>Paire</label>
-<select id="paire"><option>Volatility 75 (1s)</option><option>Volatility 50 (1s)</option><option>Volatility 100 (1s)</option><option>EUR/USD</option><option>XAU/USD</option></select>
+<select id="paire">
+<option>Volatility 50 (1s)</option>
+<option>Volatility 75 (1s)</option>
+<option>Volatility 100 (1s)</option>
+<option>Volatility 50 Index</option>
+<option>Volatility 75 Index</option>
+<option>EUR/USD</option>
+<option>GBP/USD</option>
+<option>XAU/USD - GOLD</option>
+</select>
+
 <label>Prix actuel sur la capture</label>
-<input id="prix" type="number" placeholder="Ex: 38868">
-<label>Upload ta capture</label>
+<input id="prix" type="number" placeholder="Ex: 199568.28" value="199568.28">
+
+<label>Capture TradingView / 1xBet</label>
 <input id="file" type="file" accept="image/*">
-<img id="preview" style="display:none">
-<button class="btn" onclick="analyserAuto()">🤖 ANALYSER AUTO SMC A à Z</button>
-<div id="loading" style="display:none;text-align:center;margin-top:10px">🧠 L'IA analyse Sweep, BOS, CHOCH, OB, FVG, OTE... 10 sec...</div>
+<img id="preview">
 </div>
 
-<div id="res" style="display:none">
-<div class="card">
-<div class="big" id="signal">...</div>
-<div id="score" style="text-align:center;font-size:22px;font-weight:900"></div>
-<div id="verdict" style="margin-top:10px"></div>
-<h3>📋 Analyse A à Z (par l'IA)</h3>
-<table id="details"></table>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
-<div class="box">Entrée OTE<br><b id="entree">-</b></div>
-<div class="box">SL<br><b id="sl" style="color:#ff4444">-</b></div>
-<div class="box">TP1<br><b id="tp1" style="color:#22c55e">-</b></div>
-<div class="box">TP2<br><b id="tp2" style="color:#22c55e">-</b></div>
-</div>
-<p id="raison" style="font-size:13px;color:#facc15"></p>
-</div>
-</div>
+<button id="btn" onclick="analyser()">🤖 ANALYSER AUTO SMC A à Z</button>
+<p style="text-align:center"><small>🧠 L'IA analyse Sweep, BOS, CHOCH, OB, FVG, OTE... 10 sec...</small></p>
+
+<div id="err" class="error"></div>
+<div id="res" class="result"></div>
 
 <script>
-let lastImgBase64=null;
-document.getElementById('file').addEventListener('change',e=>{
-  let f=e.target.files[0]; if(!f) return;
-  let r=new FileReader(); r.onload=ev=>{
-    document.getElementById('preview').src=ev.target.result; document.getElementById('preview').style.display='block';
-    lastImgBase64=ev.target.result.split(',')[1];
-  }; r.readAsDataURL(f);
+let base64Img = "";
+document.getElementById('file').addEventListener('change', function(e){
+  const f = e.target.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = function(ev){
+    base64Img = ev.target.result.split(',')[1];
+    const p = document.getElementById('preview');
+    p.src = ev.target.result; p.style.display='block';
+  };
+  r.readAsDataURL(f);
 });
 
-async function analyserAuto(){
-  let key=document.getElementById('apikey').value.trim();
-  let prix=parseFloat(document.getElementById('prix').value);
-  if(!key){alert('Colle d’abord ta clé Gemini gratuite ! Va sur aistudio.google.com');return;}
-  if(!prix){alert('Tape le prix !');return;}
-  if(!lastImgBase64){alert('Upload ta capture !');return;}
-  document.getElementById('loading').style.display='block';
-  document.getElementById('res').style.display='none';
+async function analyser(){
+  const key = document.getElementById('apiKey').value.trim();
+  const paire = document.getElementById('paire').value;
+  const prix = document.getElementById('prix').value;
+  const errDiv = document.getElementById('err');
+  const resDiv = document.getElementById('res');
+  const btn = document.getElementById('btn');
+  errDiv.style.display='none'; resDiv.style.display='none';
 
-  let prompt = `Tu es un expert SMC très strict sur Volatility 75 (1s). Analyse cette capture de trading.
-  Prix actuel réel : ${prix}.
-  Tu dois répondre UNIQUEMENT en JSON, sans texte autour, format exact :
-  {"signal":"BUY ou SELL ou ATTENDS ou INVALIDE","score":0-98,"sweep":true/false,"bos":true/false,"choch_frais":true/false,"ob":true/false,"fvg":true/false,"ote":true/false,"confirmation":true/false,"couteau":true/false,"entree":number,"sl":number,"tp1":number,"tp2":number,"raison":"explication courte en français"}
-  REGLES STRICTES : 
-    - choch_frais = true seulement si CHOCH il y a moins de 5 bougies.
-    - confirmation = true seulement si tu vois une bougie englobante ou rejet qui a CLOTURE dans le sens du signal.
-    - Si confirmation = false, score max 65 et signal = ATTENDS.
-    - Si couteau = true (prix tombe fort dans la zone), score -20 et signal = INVALIDE ou ATTENDS.
-    - Si choch_frais = false, score -10.
-    - entree doit être proche du prix actuel, dans la zone OTE.
-    - sl doit être logique, au-delà de l'Order Block, pas à 1000 points.
-    - Ne jamais donner 98% sans confirmation.`;
+  if(!key){ alert("Colle d'abord ta clé IA !"); return; }
+  if(!base64Img){ alert("Upload d'abord ta capture !"); return; }
 
-  try{
-    let resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{parts:[{text:prompt},{inline_data:{mime_type:"image/jpeg",data:lastImgBase64}}]}]})
-    });
-    let data=await resp.json();
-    let txt=data.candidates[0].content.parts[0].text;
-    txt=txt.replace(/```json|```/g,'').trim();
-    let j=JSON.parse(txt);
-    document.getElementById('loading').style.display='none';
-    document.getElementById('res').style.display='block';
-    document.getElementById('signal').innerText=j.signal;
-    document.getElementById('signal').style.color=j.signal.includes('BUY')?'#22c55e':j.signal.includes('SELL')?'#ff2d55':'#ffb020';
-    document.getElementById('score').innerText='Score Réel : '+j.score+'%';
-    document.getElementById('entree').innerText=j.entree;
-    document.getElementById('sl').innerText=j.sl;
-    document.getElementById('tp1').innerText=j.tp1;
-    document.getElementById('tp2').innerText=j.tp2;
-    document.getElementById('raison').innerText='IA : '+j.raison;
-    let rows=[['A - Sweep',j.sweep?'✅':'❌'],['B - BOS',j.bos?'✅':'❌'],['C - CHOCH FRAIS',j.choch_frais?'✅':'❌ - C\'était le problème du Trade 1'],['D - Order Block',j.ob?'✅':'❌'],['E - FVG',j.fvg?'✅':'❌'],['F - OTE',j.ote?'✅':'❌'],['G - Bougie Confirmation',j.confirmation?'✅':'❌ - Sans ça, max 65%'],['H - Couteau qui tombe ?',j.couteau?'❌ OUI - DANGER':'✅ NON']];
-    document.getElementById('details').innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
-    let v=document.getElementById('verdict');
-    if(j.signal.includes('BUY')||j.signal.includes('SELL')){
-      v.innerHTML='<div class="ok">✅ VALIDÉ par l\'IA avec confirmation. Tu peux entrer avec SL fixe.</div>';
-    } else if(j.signal==='ATTENDS'){
-      v.innerHTML='<div class="warn">⏳ ATTENDS. L\'IA a vu la structure mais pas la confirmation. C\'est ce qui a tué Trade 1 et 2. Ne force pas.</div>';
-    } else {
-      v.innerHTML='<div class="bad">❌ INVALIDÉ. Ne trade pas ce setup.</div>';
+  btn.disabled=true; btn.innerText="⏳ L'IA analyse... attends 10 sec...";
+
+  const prompt = `Tu es un expert SMC trader sur ${paire}. Prix actuel: ${prix}.
+Analyse ce graphique en détail et réponds UNIQUEMENT en français, de façon claire et structurée :
+
+1. STRUCTURE : Tendance H1 / M15 ? BOS ou CHOCH visible ? Où ?
+2. SWEEP : Y a-t-il eu un sweep de liquidité (mèche qui prend un haut/bas) ?
+3. ORDER BLOCK : Où est le dernier OB valide ? Donne zone prix.
+4. FVG : Y a-t-il un Fair Value Gap à combler ?
+5. OTE : Zone OTE 62-79% Fibonacci ?
+6. PLAN : 
+- Direction : BUY ou SELL ou ATTENDRE ?
+- Entrée : prix exact
+- Stop Loss : prix exact
+- Take Profit 1 / TP2 : prix exact
+- Raison en 1 phrase.
+
+Si le graphique est flou, dis-le. Ne invente pas de prix si tu ne vois pas. Sois précis.`;
+
+  // MODELES A TESTER DANS L'ORDRE - si le 1er échoue, on essaie le 2e
+  const modeles = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.0-flash-lite"];
+  let derniereErreur = "";
+
+  for(let modele of modeles){
+    try{
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modele}:generateContent?key=${key}`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          contents: [{ parts: [{text: prompt}, {inline_data: {mime_type: "image/jpeg", data: base64Img}}] }]
+        })
+      });
+      const data = await response.json();
+
+      // SI GOOGLE RENVOIE UNE ERREUR, ON L'AFFICHE VRAIMENT
+      if(data.error){
+        derniereErreur = "Modèle " + modele + " -> " + data.error.message + " (Code: " + data.error.code + ")";
+        console.log(derniereErreur);
+        continue; // essaie le modèle suivant
+      }
+
+      if(!data.candidates || !data.candidates[0] || !data.candidates[0].content){
+        derniereErreur = "Google a répondu mais sans résultat. Essaie une autre capture plus nette.";
+        continue;
+      }
+
+      const texte = data.candidates[0].content.parts[0].text;
+      resDiv.innerText = "✅ ANALYSE " + paire + " - Modèle: " + modele + "\n\n" + texte;
+      resDiv.style.display='block';
+      btn.disabled=false; btn.innerText="🤖 ANALYSER AUTO SMC A à Z";
+      return;
+
+    } catch(e){
+      derniereErreur = "Erreur connexion: " + e.message;
     }
-    document.getElementById('res').scrollIntoView({behavior:'smooth'});
-  }catch(e){
-    document.getElementById('loading').style.display='none';
-    alert('Erreur IA : '+e.message+' Vérifie ta clé et ta connexion.');
   }
+
+  // SI LES 3 MODELES ONT ECHOUE, ON AFFICHE LA VRAIE RAISON
+  errDiv.innerHTML = "<b>❌ L'IA a bloqué. Voici la VRAIE raison de Google :</b><br><br>" + derniereErreur + "<br><br><b>Que faire ?</b><br>1. Vérifie que ta clé est bien collée sans espace devant/derrière<br>2. Va sur aistudio.google.com > Crée une NOUVELLE clé dans un NOUVEAU projet<br>3. Attends 2 min et réessaie";
+  errDiv.style.display='block';
+  btn.disabled=false; btn.innerText="🤖 ANALYSER AUTO SMC A à Z";
 }
 </script>
 </body>
