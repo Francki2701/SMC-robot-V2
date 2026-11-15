@@ -3,149 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FR INSTITUTIONAL AI ROBOT V3.2 - VRAI PRIX</title>
+<title>FR INSTITUTIONAL AI ROBOT V4 - CORRIGÉ</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#0b1220;color:#fff;font-family:-apple-system,Arial,sans-serif;padding:12px}
-.top{font-weight:900;font-size:19px;line-height:1.2}.top span{color:#00ff88}
+.top{font-weight:900;font-size:19px}.top span{color:#00ff88}
 .sub{color:#9aa7b8;font-size:12px;margin:6px 0 12px}
 .card{background:#131c2e;border:1px solid #1e2a44;border-radius:14px;padding:14px;margin-bottom:12px}
-.card h3{margin:0 0 10px;font-size:15px}
 label{font-size:13px;color:#cbd5e1;display:block;margin:8px 0 5px}
 input,select{width:100%;background:#0b1220;border:1px solid #334155;color:#fff;padding:12px;border-radius:10px;font-size:15px}
-.warn{background:#2a1500;color:#ffb020;padding:8px;border-radius:8px;font-size:12px;margin-top:8px}
+.chk{display:flex;gap:10px;align-items:center;background:#0b1220;border:1px solid #334155;border-radius:10px;padding:12px;margin:6px 0;font-size:14px}
+.chk input{width:22px;height:22px}
 .btn{width:100%;background:#00c853;color:#000;font-weight:900;padding:14px;border:0;border-radius:12px;font-size:16px;margin-top:10px}
-img{max-width:100%;border-radius:10px;margin-top:10px;display:none}
-.big{text-align:center;font-size:42px;font-weight:900;color:#ff2d55;margin:8px 0}
-.conf{text-align:center;color:#ffb020;font-size:13px}
+.big{text-align:center;font-size:38px;font-weight:900;margin:8px 0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .box{background:#0b1220;border-radius:10px;padding:10px}.box small{color:#94a3b8}.box b{font-size:16px;display:block;margin-top:3px}
-table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:7px 4px;border-bottom:1px solid #1e2a44;text-align:left}
-.ote{color:#ffcc00}.bar{height:10px;background:#1e2a44;border-radius:10px;overflow:hidden;display:flex}.g{background:#22c55e}.r{background:#ef4444}
 .jbtn{background:#1e293b;color:#fff;border:0;padding:10px;border-radius:10px;width:100%;margin-top:10px;font-weight:700}
+.warn{background:#2a1500;color:#ffb020;padding:10px;border-radius:8px;font-size:13px}
+.ok{background:#052e16;color:#4ade80;padding:10px;border-radius:8px;font-size:13px}
+.bad{background:#450a0a;color:#fca5a5;padding:10px;border-radius:8px;font-size:13px}
 </style>
 </head>
 <body>
-<div class="top">FR INSTITUTIONAL AI ROBOT <span>V3.2<br>VRAI PRIX</span></div>
-<div class="sub">TU TAPES LE VRAI PRIX • TU UPLOADES • BAMMM • SIGNAL</div>
+<div class="top">FR INSTITUTIONAL AI ROBOT <span>V4 CORRIGÉ</span></div>
+<div class="sub">V4 = Plus de pixels. Tu valides, le robot calcule le VRAI score. 2 pertes = leçon intégrée.</div>
 
 <div class="card">
-<h3>📤 UPLOAD TA CAPTURE = BAMMM</h3>
-<p style="font-size:12px;color:#94a3b8;margin:0">1. Choisis ta paire. 2. Tape le prix que tu vois sur ta capture. 3. Upload.</p>
+<h3>1. Prix + Direction</h3>
 <label>Paire</label>
-<select id="paire">
-<option>Volatility 50 (1s)</option><option>Volatility 75 (1s)</option><option>Volatility 100 (1s)</option><option>Volatility 10 (1s)</option><option>Volatility 25 (1s)</option><option>EUR/USD</option><option>GBP/USD</option><option>XAU/USD</option>
-</select>
-<label>💰 Prix actuel que tu vois sur ta capture (OBLIGATOIRE)</label>
-<input id="prix" type="number" placeholder="Ex: 197086.12" inputmode="decimal">
-<div class="warn">⚠️ Ne laisse pas vide ! C'est ce prix qui corrige le bug 2617 vs 4020.</div>
-<label>Choisir le fichier</label>
-<input id="file" type="file" accept="image/*">
-<img id="preview">
-<button class="btn" onclick="analyser()">🚀 ANALYSER = BAMMM</button>
+<select id="paire"><option>Volatility 75 (1s)</option><option>Volatility 50 (1s)</option><option>Volatility 100 (1s)</option><option>EUR/USD</option><option>XAU/USD</option></select>
+<label>Prix actuel que tu vois</label>
+<input id="prix" type="number" placeholder="Ex: 38868">
+<label>Direction que tu penses (selon structure)</label>
+<select id="dir"><option value="BUY">BUY</option><option value="SELL">SELL</option></select>
 </div>
 
-<div id="result" style="display:none">
 <div class="card">
-<div id="ok">✅ BAMMM ! Analyse terminée sur vrai prix <span id="prixAffiche"></span></div>
-<div id="texteAnalyse" style="font-size:13px;margin-top:8px;color:#cbd5e1"></div>
-<div class="big" id="signal">SELL</div>
-<div class="conf" id="conf">Confiance Élevée 🔥 • 77% dominance</div>
+<h3>2. Coche UNIQUEMENT ce que tu vois VRAIMENT sur la capture</h3>
+<div class="chk"><input type="checkbox" id="c1"> Sweep de liquidité visible (mèche qui a pris le bas/haut)</div>
+<div class="chk"><input type="checkbox" id="c2"> BOS confirmé par clôture</div>
+<div class="chk"><input type="checkbox" id="c3"> CHOCH FRAIS (il y a moins de 5 bougies) - C'est lui qui manquait au Trade 1</div>
+<div class="chk"><input type="checkbox" id="c4"> Order Block clair, pas encore cassé</div>
+<div class="chk"><input type="checkbox" id="c5"> FVG visible</div>
+<div class="chk"><input type="checkbox" id="c6"> Prix DANS la zone OTE 61.8% - 79%</div>
+<div class="chk" style="border-color:#00ff88"><input type="checkbox" id="c7"> ✅ BOUGIE DE CONFIRMATION : Englobante ou rejet qui a CLÔTURÉ dans mon sens</div>
+<div class="chk" style="border-color:#ff2d55"><input type="checkbox" id="c8"> ❌ Le prix est en train de DESCENDRE / MONTER fort dans la zone (couteau qui tombe)</div>
+</div>
+
+<div class="card">
+<button class="btn" onclick="analyserV4()">🚀 CALCULER LE VRAI SCORE</button>
+<div id="res" style="display:none;margin-top:14px">
+<div class="big" id="signal">ATTENDS</div>
+<div id="scoreTxt" style="text-align:center;font-size:20px;font-weight:900"></div>
+<div id="verdict" style="margin-top:10px"></div>
 <div class="grid" style="margin-top:12px">
-<div class="box"><small>Entrée OTE Auto</small><b id="entree">-</b></div>
-<div class="box"><small>Stop Loss Auto</small><b id="sl" style="color:#ff4444">-</b></div>
-<div class="box"><small>Take Profit 1 (1:1)</small><b id="tp1" style="color:#22c55e">-</b></div>
-<div class="box"><small>Take Profit 2 (1:2)</small><b id="tp2" style="color:#22c55e">-</b></div>
-<div class="box"><small>Risk / Reward</small><b>1 : 2.00</b></div>
-<div class="box"><small>Zone OTE Auto</small><b id="ote">-</b></div>
+<div class="box"><small>Entrée</small><b id="entree">-</b></div>
+<div class="box"><small>Stop Loss</small><b id="sl" style="color:#ff4444">-</b></div>
+<div class="box"><small>TP1 (1:1)</small><b id="tp1" style="color:#22c55e">-</b></div>
+<div class="box"><small>TP2 (1:2)</small><b id="tp2" style="color:#22c55e">-</b></div>
 </div>
-<div style="margin-top:12px"><small>🟢 Bougies Vertes <span id="vert">23%</span></small><div class="bar"><div class="g" id="barV" style="width:23%"></div><div class="r" id="barR" style="width:77%"></div></div><small>🔴 Bougies Rouges <span id="rouge">77%</span></small></div>
+<div style="margin-top:10px;display:flex;gap:8px">
+<button class="jbtn" style="background:#22c55e;color:#000" onclick="addJournal(true)">✅ J'ai GAGNÉ ce trade</button>
+<button class="jbtn" style="background:#ef4444;color:#fff" onclick="addJournal(false)">❌ J'ai PERDU ce trade</button>
 </div>
-
-<div class="card">
-<h3>Fibonacci Auto (calculé sur ton vrai prix)</h3>
-<table><tr><th>Niveau</th><th>Prix</th><th>Zone</th></tr><tbody id="fibo"></tbody></table>
-<div id="explication" style="font-size:12px;color:#facc15;margin-top:10px"></div>
-<button class="jbtn" onclick="ajouterJournal()">Ajouter au Journal</button>
+</div>
 </div>
 
 <div class="card">
-<h3>📓 Journal Auto</h3>
-<div class="grid"><div class="box"><small>Total Trades</small><b id="total">0</b></div><div class="box"><small>Win Rate</small><b id="winrate">0%</b></div></div>
-<div id="journal" style="font-size:12px;color:#94a3b8;margin-top:8px">Aucun trade.</div>
-</div>
+<h3>📓 Journal RÉEL (plus de hasard)</h3>
+<div class="grid"><div class="box"><small>Total</small><b id="total">0</b></div><div class="box"><small>Win Rate RÉEL</small><b id="winrate">0%</b></div></div>
+<div id="journal" style="font-size:12px;color:#94a3b8;margin-top:8px">Aucun trade. Tes 2 pertes précédentes : Trade 1 -30$ / Trade 2 -20$ = Total -50$</div>
 </div>
 
 <script>
-let total=0, wins=0;
-let lastImg=null;
-document.getElementById('file').addEventListener('change',e=>{
-  let f=e.target.files[0]; if(!f) return;
-  let r=new FileReader(); r.onload=ev=>{ let im=document.getElementById('preview'); im.src=ev.target.result; im.style.display='block'; lastImg=ev.target.result; };
-  r.readAsDataURL(f);
-});
-function analyser(){
+let total=0,wins=0; let last=null;
+function analyserV4(){
   let prix=parseFloat(document.getElementById('prix').value);
-  if(!prix){ alert('⚠️ Tape d’abord le VRAI PRIX que tu vois sur ta capture !'); return; }
-  if(!lastImg){ alert('⚠️ Upload d’abord ta capture !'); return; }
-  // Analyse couleurs de l'image : compte pixels verts vs rouges
-  let img=new Image(); img.onload=()=>{
-    let c=document.createElement('canvas'); c.width=img.width; c.height=img.height;
-    let ctx=c.getContext('2d'); ctx.drawImage(img,0,0);
-    try{
-      let d=ctx.getImageData(0,0,c.width,c.height).data;
-      let g=0,r=0;
-      for(let i=0;i<d.length;i+=16){ let R=d[i],G=d[i+1],B=d[i+2];
-        if(G>R+20 && G>B+15) g++;
-        if(R>G+20 && R>B+15) r++;
-      }
-      let tot=g+r||1; let pv=Math.round(g/tot*100); let pr=100-pv;
-      lancer(prix,pv,pr);
-    }catch(e){ lancer(prix,23,77); }
-  }; img.src=lastImg;
-}
-function lancer(prix,pv,pr){
-  document.getElementById('result').style.display='block';
-  document.getElementById('prixAffiche').innerText=prix.toFixed(2);
-  document.getElementById('vert').innerText=pv+'%';
-  document.getElementById('rouge').innerText=pr+'%';
-  document.getElementById('barV').style.width=pv+'%';
-  document.getElementById('barR').style.width=pr+'%';
-  let isSell = pr>=pv;
-  let sig=document.getElementById('signal');
-  sig.innerText=isSell?'🔴 SELL':'🟢 BUY';
-  sig.style.color=isSell?'#ff2d55':'#22c55e';
-  document.getElementById('texteAnalyse').innerText='Le robot a lu '+pv+'% bougies vertes et '+pr+'% bougies rouges sur ta capture.';
-  document.getElementById('conf').innerText='Confiance Élevée 🔥 • '+Math.max(pv,pr)+'% dominance';
-  // Calculs SMC : High = prix +1%, Low = prix -1%
+  if(!prix){alert('Tape le prix !');return;}
+  let dir=document.getElementById('dir').value;
+  let c=[1,2,3,4,5,6,7].map(i=>document.getElementById('c'+i).checked);
+  let couteau=document.getElementById('c8').checked;
+  let score=0;
+  if(c[0]) score+=10; if(c[1]) score+=10; if(c[2]) score+=15; if(c[3]) score+=10; if(c[4]) score+=10; if(c[5]) score+=10;
+  // REGLE CORRIGEE APRES 2 PERTES
+  if(!c[6]){ score=Math.min(score,65); }
+  else { score+=20; }
+  if(couteau) score-=20;
+  if(!c[2]) score-=10; // Pas de CHOCH frais = penalite
+  score=Math.max(0,Math.min(98,score));
+
+  let verdictEl=document.getElementById('verdict');
+  let sigEl=document.getElementById('signal');
+  let txt=document.getElementById('scoreTxt');
+  document.getElementById('res').style.display='block';
+  txt.innerText='Score Réel : '+score+'%';
+  let isBuy=dir==='BUY';
+  // Calculs simples OTE autour du prix
   let high=prix*1.01, low=prix*0.99, range=high-low;
-  let fib=[0,23.6,38.2,50,61.8,70.5,79,100];
-  let fibPrix=fib.map(f=> high - range*f/100);
-  let entree=fibPrix[4]; // 61.8% OTE
-  let sl = isSell ? high*1.0005 : low*0.9995;
+  let entree=high-range*0.618;
+  let sl=isBuy? low*0.9995 : high*1.0005;
   let risque=Math.abs(entree-sl);
-  let tp1 = isSell ? entree-risque : entree+risque;
-  let tp2 = isSell ? entree-risque*2 : entree+risque*2;
-  let oteLow=fibPrix[5], oteHigh=fibPrix[4];
+  let tp1=isBuy? entree+risque : entree-risque;
+  let tp2=isBuy? entree+risque*2 : entree-risque*2;
+
+  if(score>=80 && c[6] && !couteau){
+    sigEl.innerText='✅ ENTRE - '+dir; sigEl.style.color='#22c55e';
+    verdictEl.innerHTML='<div class="ok"><b>VALIDÉ.</b> Confirmation présente + CHOCH frais + pas de couteau qui tombe. Tu peux entrer avec SL fixe.</div>';
+  } else if(score>=65 && !c[6]){
+    sigEl.innerText='⏳ ATTENDS'; sigEl.style.color='#ffb020';
+    verdictEl.innerHTML='<div class="warn"><b>N\'ENTRE PAS.</b> Il manque la bougie de confirmation. C\'est exactement ce qui a tué Trade 1 et Trade 2. Attends une bougie qui clôture dans ton sens.</div>';
+  } else {
+    sigEl.innerText='❌ INVALIDÉ'; sigEl.style.color='#ff2d55';
+    verdictEl.innerHTML='<div class="bad"><b>INVALIDÉ.</b> Score trop bas ou couteau qui tombe ou CHOCH expiré. Ne trade pas ce setup.</div>';
+  }
   document.getElementById('entree').innerText=entree.toFixed(2);
   document.getElementById('sl').innerText=sl.toFixed(2);
   document.getElementById('tp1').innerText=tp1.toFixed(2);
   document.getElementById('tp2').innerText=tp2.toFixed(2);
-  document.getElementById('ote').innerText=oteLow.toFixed(2)+' - '+oteHigh.toFixed(2);
-  let rows=[['0% - High',high,''],['23.6%',fibPrix[1],''],['38.2%',fibPrix[2],''],['50%',fibPrix[3],''],['61.8% - OTE',fibPrix[4],'⭐ OTE'],['70.5% - OTE',fibPrix[5],'⭐ OTE'],['79% - OTE',fibPrix[6],'⭐ OTE'],['100% - Low',low,'']];
-  document.getElementById('fibo').innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1].toFixed(2)+'</td><td class="ote">'+r[2]+'</td></tr>').join('');
-  document.getElementById('explication').innerText='Robot : Dominance '+(isSell?'rouge':'verte')+' '+Math.max(pv,pr)+'%. Prix réel utilisé : '+prix.toFixed(2)+'. Attends le prix dans OTE '+oteLow.toFixed(2)+' - '+oteHigh.toFixed(2)+', puis '+(isSell?'SELL':'BUY')+'. SL au-dessus du TP2. TP2 = 2x risque.';
-  window._last={prix,signal:isSell?'SELL':'BUY',entree,sl,tp1,tp2};
-  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+  last={dir,entree,sl,tp2,score};
 }
-function ajouterJournal(){
-  if(!window._last) return;
-  total++; if(Math.random()>0.4) wins++;
+function addJournal(gagne){
+  if(!last) return;
+  total++; if(gagne) wins++;
   document.getElementById('total').innerText=total;
   document.getElementById('winrate').innerText=Math.round(wins/total*100)+'%';
   let j=document.getElementById('journal');
-  if(total==1) j.innerHTML='';
-  j.innerHTML+='<div>• '+window._last.signal+' @ '+window._last.entree.toFixed(2)+' | SL '+window._last.sl.toFixed(2)+' | TP2 '+window._last.tp2.toFixed(2)+'</div>';
-  alert('Ajouté au Journal ✅');
+  if(total==1) j.innerHTML='Historique V4 (sans compter les -50$ de V3) :<br>';
+  j.innerHTML+='<div>• '+last.dir+' @ '+last.entree.toFixed(2)+' | Score '+last.score+'% | '+(gagne?'✅ GAGNÉ':'❌ PERDU')+'</div>';
 }
 </script>
 </body>
